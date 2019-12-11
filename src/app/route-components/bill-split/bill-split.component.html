@@ -1,0 +1,71 @@
+<app-instructions></app-instructions>
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Friends</mat-panel-title>
+      <mat-panel-description>Add your Friends (Don't forget to include yourself!)</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-add-friends (onFriendsChange)="onFriendsChange($event)"></app-add-friends>
+
+    <mat-action-row>
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Bills</mat-panel-title>
+      <mat-panel-description>Add all of the bills you need to split</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-add-bills [friends]="friends" (onBillsChange)="onBillsChange($event)"></app-add-bills>
+
+    <mat-action-row>
+      <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Splitting</mat-panel-title>
+      <mat-panel-description>Choose who contributed to which bill</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-bill-spliting [friends]="friends" [bills]="bills" (onBillsSplit)="onBillsSplit($event)"></app-bill-spliting>
+
+    <mat-action-row>
+      <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Calculation</mat-panel-title>
+      <mat-panel-description>Calculate the split</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-split-calculate [friends]="friends" [bills]="bills" [splits]="splits" (onCalculate)="onCalculate($event)"></app-split-calculate>
+
+    <mat-action-row>
+      <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Share</mat-panel-title>
+      <mat-panel-description>Share the calculation with your friends</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-split-share [friends]="friends" [bills]="bills" [network]="network"></app-split-share>
+
+    <mat-action-row>
+      <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">End</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

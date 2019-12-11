@@ -1,0 +1,17 @@
+@import 'src/style-guide';
+
+.instructions-component {
+  margin-top: 10vh;
+  padding: 24px 24px 12px 24px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  h2 {
+    margin: 0 0 12px 0;
+  }
+
+  span {
+    padding-bottom: 12px;
+  }
+}

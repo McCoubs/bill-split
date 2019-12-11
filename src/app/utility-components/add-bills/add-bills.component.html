@@ -1,0 +1,28 @@
+<form class="add-bills-component" [formGroup]="billsForm">
+  <div *ngIf="friends.length <= 0; else addBills">
+    <h2>Please add your friends in previous step before continuing</h2>
+  </div>
+  <ng-template #addBills>
+    <div class="bills-container" formArrayName="bills" *ngFor="let bill of billsForm?.get('bills')?.controls; let i = index;">
+      <div class="bill-form" [formGroupName]="i">
+        <mat-form-field>
+          <mat-label>Select who paid</mat-label>
+          <mat-select formControlName="owner">
+            <mat-option *ngFor="let friend of friends" [value]="friend.uuid">
+              {{ friend.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="total" placeholder="Total" (change)="transform($event, i)">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="name" placeholder="name">
+        </mat-form-field>
+        <button mat-raised-button color="warn" type="button" (click)="deleteBill(i)">Remove</button>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="addBill()">Add Bill</button>
+  </ng-template>
+</form>
+

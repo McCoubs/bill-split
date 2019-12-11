@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+@import '~angular-notifier/styles';
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html, body { height: 100%; }
+
+.notifier__notification--material {
+  display: flex;
+  max-width: 80%;
+}
