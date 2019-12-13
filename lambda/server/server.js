@@ -8,8 +8,9 @@ require('dotenv').config();
 
 const router = express.Router();
 router.get('/', (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>'+ process.env.MONGODB_URL + process.env.JWT_SECRET + '</h1>');
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  // res.write('<h1>'+ process.env.MONGODB_URL + process.env.JWT_SECRET + '</h1>');
+  res.json(process.env);
   // res.write('<h1>Hello from Express.js!</h1><p>'+ jwt.sign({ sub: 'hello' }, process.env.JWT_SECRET, {
   //   expiresIn: process.env.JWT_EXP,
   // }) + '</p>');
