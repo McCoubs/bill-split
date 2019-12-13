@@ -3,11 +3,16 @@ const express = require('express');
 const serverless = require('serverless-http');
 const app = express();
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const router = express.Router();
 router.get('/', (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>Hello from Express.js!</h1>');
+  res.write('<h1>'+ process.env.JWT_SECRET + '</h1>');
+  res.write('<h1>Hello from Express.js!</h1><p>'+ jwt.sign({ sub: 'hello' }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXP,
+  }) + '</p>');
   res.end();
 });
 
