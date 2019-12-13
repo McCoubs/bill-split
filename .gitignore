@@ -45,4 +45,4 @@ testem.log
 .DS_Store
 Thumbs.db
 /.env
-/lambda/server.js
+# /lambda/server.js
