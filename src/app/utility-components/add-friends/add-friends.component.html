@@ -1,0 +1,18 @@
+<form class="add-friends-component" [formGroup]="friendsForm">
+  <div class="friends-container" formArrayName="friends" *ngFor="let friend of friendsForm?.get('friends')?.controls; let i = index;">
+    <div class="friend-form" [formGroupName]="i">
+      <mat-form-field>
+        <input matInput formControlName="name" placeholder="Name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="email" placeholder="Email">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="phone_number" placeholder="Phone Number">
+      </mat-form-field>
+      <button mat-button color="warn" (click)="deleteFriend(i)">Remove</button>
+    </div>
+  </div>
+  <button mat-button color="primary" (click)="addFriend()">Add Friend</button>
+</form>
+

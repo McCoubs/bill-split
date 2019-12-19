@@ -4,11 +4,8 @@
 
 require('dotenv').config();
 
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
 const ServerError = require('../utils/ServerError');
+const mongoose = require('mongoose');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // database
@@ -16,7 +13,7 @@ const ServerError = require('../utils/ServerError');
 
 // connect to the db
 mongoose.connect(
-  process.env.MONGODB_URL | 'mongodb://localhost:27017',
+  process.env.MONGODB_URL.toString() || 'mongodb://localhost:27017',
   { useNewUrlParser: true },
 );
 
@@ -24,30 +21,27 @@ mongoose.connect(
 // schema
 // ─────────────────────────────────────────────────────────────────────────────
 
-const UserSchema = new mongoose.Schema(
+const FriendSchema = new mongoose.Schema(
   {
-    username: {
-      type:     String,
+    creator: {
+      type: String,
       required: true,
-      unique:   true, // used to generate user pages
-      trim:     true,
+      trim: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
     },
     email: {
-      type:     String,
-      required: true,
-      trim:     true,
+      type: String,
+      required: false,
+      trim: true,
     },
-    password: {
-      type:     String,
-      required: true,
-    },
-    loginDate: {
-      type:    Date,
-      default: Date.now(),
-    },
-    logoutDate: {
-      type:    Date,
-      default: null,
+    phone_number: {
+      type: String,
+      required: false,
+      trim: true
     },
   },
   { timestamps: true }, // adds createdAt and updatedAt automatic fields
@@ -57,28 +51,22 @@ const UserSchema = new mongoose.Schema(
 // statics
 // ─────────────────────────────────────────────────────────────────────────────
 
-UserSchema.statics.signup = async function signup(username, email, password) {
+FriendSchema.statics.add = async function add(creator, name, email, phone_number) {
   try {
     // check if required data received
-    if (!(username && email && password)) {
-      throw new ServerError(400, 'Parameters "username" and "email" and "password" are required');
+    if (!(creator && name && email)) {
+      throw new ServerError(400, 'Parameters "creator", "name" and "email" are required');
     }
 
-    // create new user, will throw with code 11000 if user already exists
-    const user = await this.create({
-      username,
-      email,
-      password: await bcrypt.hash(password, 10),
-    });
+    // create new friend, will throw with code 11000 if friend already exists
+    const friend = await this.create({ creator, name, email, phone_number });
 
     // all went well, return JWT token
-    return jwt.sign({ sub: user.id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXP,
-    });
+    return friend
   } catch (error) {
     // check if DB-specific error
     if (error.code === 11000) {
-      throw new ServerError(409, 'User already exists');
+      throw new ServerError(500, 'User already exists');
     }
 
     // pass generic error up
@@ -86,61 +74,7 @@ UserSchema.statics.signup = async function signup(username, email, password) {
   }
 };
 
-UserSchema.statics.login = async function login(username, email, password) {
-  try {
-    // check if required data received
-    if (!((username || email) && password)) {
-      throw new ServerError(400, 'Parameters "username" or "email" and "password" are required');
-    }
-
-    // search for a user based on username or email
-    // update last login date
-    const user = await this.findOneAndUpdate(
-      {
-        $or: [{ username }, { email }],
-      },
-      { loginDate: Date.now() },
-    );
-
-    // check if such user exists
-    if (!user) {
-      throw new ServerError(401, 'User not found');
-    }
-
-    // check if password matches
-    if (!(await bcrypt.compare(password, user.password))) {
-      throw new ServerError(401, 'Incorrect password');
-    }
-
-    // all went well, return JWT token
-    return jwt.sign({ sub: user.id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXP,
-    });
-  } catch (error) {
-    // something went bad, pass error up
-    throw error;
-  }
-};
-
-UserSchema.statics.logout = async function logout(id) {
-  try {
-    // check if required data received
-    if (!id) {
-      throw new ServerError(400, 'Parameters "id" are required');
-    }
-
-    // search for a user based on id
-    // update logout date
-    await this.findByIdAndUpdate(id, {
-      logoutDate: Date.now(),
-    });
-  } catch (error) {
-    // something went bad, pass error up
-    throw error;
-  }
-};
-
-UserSchema.statics.delete = async function deleteAccount(id) {
+FriendSchema.statics.delete = async function deleteAccount(id) {
   try {
     // check if required data received
     if (!id) {
@@ -162,4 +96,4 @@ UserSchema.statics.delete = async function deleteAccount(id) {
 
 // try exporting an already-existing schema first
 // this prevents a "Cannot overwrite model once compiled." error
-module.exports = mongoose.models.User || mongoose.model('User', UserSchema);
+module.exports = mongoose.models.Friend || mongoose.model('Friend', FriendSchema);

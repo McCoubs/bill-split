@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
 body {
   margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 html {
@@ -9,3 +12,5 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
+
+html, body { height: 100%; }

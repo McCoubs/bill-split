@@ -11,6 +11,16 @@
   align-items: center;
   padding: 0 24px;
 
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 84px;
+    }
+  }
+
   .account-action-button {
     display: block;
   }
