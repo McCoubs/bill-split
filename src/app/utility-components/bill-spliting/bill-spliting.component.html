@@ -2,7 +2,7 @@
   <mat-tab-group formGroupName="bills">
     <mat-tab class="checkbox-container" *ngFor="let bill of _bills; let i = index" [label]="bill.prettyPrint()" [formGroupName]="bill.uuid">
       <ng-container *ngFor="let friend of _friends; let j = index">
-        <mat-checkbox  [formControlName]="friend.uuid" *ngIf="bill.owner !== friend.uuid">
+        <mat-checkbox color="primary" [formControlName]="friend.uuid" *ngIf="bill.owner !== friend.uuid">
           {{ friend.name }}
         </mat-checkbox>
       </ng-container>

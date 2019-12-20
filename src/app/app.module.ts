@@ -13,7 +13,7 @@ import {
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatSelectModule,
+  MatSelectModule, MatTableModule,
   MatTabsModule
 } from '@angular/material';
 
@@ -27,6 +27,8 @@ import { AddBillsComponent } from './utility-components/add-bills/add-bills.comp
 import { BillSplitingComponent } from './utility-components/bill-spliting/bill-spliting.component';
 import { SplitCalculateComponent } from './utility-components/split-calculate/split-calculate.component';
 
+// directives
+import { CopyClipboardDirective } from './copy-clipboard.directive';
 
 const config = new AuthServiceConfig([
   {
@@ -48,7 +50,8 @@ export function provideConfig() {
     AddFriendsComponent,
     AddBillsComponent,
     BillSplitingComponent,
-    SplitCalculateComponent
+    SplitCalculateComponent,
+    CopyClipboardDirective
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ export function provideConfig() {
     ReactiveFormsModule,
     MatSelectModule,
     MatTabsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTableModule
   ],
   providers: [
     CurrencyPipe,

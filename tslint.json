@@ -1,6 +1,7 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "no-string-literal": false,
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {
@@ -12,8 +13,7 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
-      "camelCase"
+      "app"
     ],
     "component-selector": [
       true,
@@ -79,7 +79,7 @@
     "no-inputs-metadata-property": true,
     "no-output-native": true,
     "no-output-on-prefix": false,
-    "no-output-rename": true,
+    "no-output-rename": false,
     "no-outputs-metadata-property": true,
     "template-banana-in-box": true,
     "template-no-negated-async": true,
