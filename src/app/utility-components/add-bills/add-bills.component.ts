@@ -4,6 +4,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { BillObject } from '../../models/bill';
 import { CurrencyPipe } from '@angular/common';
 import { Friend } from '../../models/friend';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-add-bills',
@@ -37,7 +38,8 @@ export class AddBillsComponent implements OnInit {
     return this.fb.group({
       owner: ['', Validators.required],
       total: ['0.00', Validators.required],
-      name: ''
+      name: '',
+      uuid: uuid()
     });
   }
 

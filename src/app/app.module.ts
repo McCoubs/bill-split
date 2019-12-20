@@ -7,7 +7,15 @@ import { AuthServiceConfig, GoogleLoginProvider, SocialLoginModule } from 'angul
 import { CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
+import {
+  MatButtonModule, MatCheckboxModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatSelectModule,
+  MatTabsModule
+} from '@angular/material';
 
 // components
 import { AppComponent } from './bootstrap/app.component';
@@ -51,7 +59,9 @@ export function provideConfig() {
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTabsModule,
+    MatCheckboxModule
   ],
   providers: [
     CurrencyPipe,
