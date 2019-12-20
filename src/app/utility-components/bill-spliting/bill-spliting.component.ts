@@ -26,28 +26,30 @@ export class BillSplitingComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder) {
-    this.splitForm = this.fb.group({ bills: this.fb.array([]) });
+    this.splitForm = this.fb.group({ bills: this.fb.group({}) });
   }
 
   ngOnInit() {
     this.splitForm.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((values: { bills: {}[] }) => {
       if (this.splitForm.dirty && this.splitForm.valid) {
-        console.log(values);
         this.onBillsSplit.emit(values.bills);
       }
     });
   }
 
   buildForm(bills: Bill[], friends: Friend[]) {
-    // create a form array for every bill where every friend is an option
-    const controls = bills.map((bill: Bill) =>  this.fb.group(friends.reduce((obj: {}, friend: Friend) => {
-      if (bill.owner !== friend.uuid) {
-        return Object.assign(obj, { [friend.uuid]: false });
-      } else {
-        return obj;
-      }
-    }, {})));
+    const controls = bills.reduce((control: {}, bill: Bill) => {
+      // for every bill, create a list of friends as options
+      const friendControl = this.fb.group(friends.reduce((obj: {}, friend: Friend) => {
+        if (bill.owner !== friend.uuid) {
+          return Object.assign(obj, { [friend.uuid]: false });
+        } else {
+          return obj;
+        }
+      }, {}));
+      return Object.assign(control, { [bill.uuid]: friendControl });
+    }, {});
 
-    this.splitForm.setControl('bills', this.fb.array(controls));
+    this.splitForm.setControl('bills', this.fb.group(controls));
   }
 }

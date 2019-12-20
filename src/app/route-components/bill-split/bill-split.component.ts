@@ -11,6 +11,7 @@ export class BillSplitComponent implements OnInit {
   step: number = -1;
   friends: Friend[] = [];
   bills: Bill[] = [];
+  splits: { [billId: string]: { [friendId: string]: boolean } }[];
 
   constructor() {}
 
@@ -24,7 +25,7 @@ export class BillSplitComponent implements OnInit {
 
   onFriendsChange(friends: Friend[]) { this.friends = friends; }
 
-  onBillsChange(bills: BillObject[]) {
-    this.bills = bills.map((bill) => new Bill(bill));
-  }
+  onBillsChange(bills: BillObject[]) { this.bills = bills.map((bill) => new Bill(bill)); }
+
+  onBillsSplit(splits: {}[]) { this.splits = splits; }
 }

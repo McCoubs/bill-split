@@ -25,6 +25,7 @@ import { InstructionsComponent } from './utility-components/instructions/instruc
 import { AddFriendsComponent } from './utility-components/add-friends/add-friends.component';
 import { AddBillsComponent } from './utility-components/add-bills/add-bills.component';
 import { BillSplitingComponent } from './utility-components/bill-spliting/bill-spliting.component';
+import { SplitCalculateComponent } from './utility-components/split-calculate/split-calculate.component';
 
 
 const config = new AuthServiceConfig([
@@ -46,7 +47,8 @@ export function provideConfig() {
     InstructionsComponent,
     AddFriendsComponent,
     AddBillsComponent,
-    BillSplitingComponent
+    BillSplitingComponent,
+    SplitCalculateComponent
   ],
   imports: [
     BrowserModule,
