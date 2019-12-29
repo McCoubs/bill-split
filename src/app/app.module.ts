@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthServiceConfig, GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
 import { CurrencyPipe } from '@angular/common';
-import { ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule, MatCheckboxModule,
@@ -26,6 +26,7 @@ import { AddFriendsComponent } from './utility-components/add-friends/add-friend
 import { AddBillsComponent } from './utility-components/add-bills/add-bills.component';
 import { BillSplitingComponent } from './utility-components/bill-spliting/bill-spliting.component';
 import { SplitCalculateComponent } from './utility-components/split-calculate/split-calculate.component';
+import { SplitShareComponent } from './utility-components/split-share/split-share.component';
 
 // directives
 import { CopyClipboardDirective } from './copy-clipboard.directive';
@@ -51,7 +52,8 @@ export function provideConfig() {
     AddBillsComponent,
     BillSplitingComponent,
     SplitCalculateComponent,
-    CopyClipboardDirective
+    CopyClipboardDirective,
+    SplitShareComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ export function provideConfig() {
     MatSelectModule,
     MatTabsModule,
     MatCheckboxModule,
-    MatTableModule
+    MatTableModule,
+    FormsModule
   ],
   providers: [
     CurrencyPipe,

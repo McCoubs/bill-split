@@ -13,7 +13,7 @@ import { v4 as uuid } from 'uuid';
 })
 export class AddBillsComponent implements OnInit {
   billsForm: FormGroup;
-  @Input() friends: Friend[];
+  @Input() friends: Friend[] = [];
 
   @Output() onBillsChange = new EventEmitter<BillObject[]>();
 
@@ -22,7 +22,7 @@ export class AddBillsComponent implements OnInit {
   ngOnInit() {
     // init new form and listen to its changes
     this.billsForm = this.fb.group({ bills: this.fb.array([this.newBill()]) });
-    this.billsForm.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((values: { bills: BillObject[] }) => {
+    this.billsForm.valueChanges.pipe(debounceTime(200), distinctUntilChanged()).subscribe((values: { bills: BillObject[] }) => {
       if (this.billsForm.dirty && this.billsForm.valid) {
         this.onBillsChange.emit(values.bills);
       }

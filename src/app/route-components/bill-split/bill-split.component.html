@@ -9,7 +9,7 @@
     <app-add-friends (onFriendsChange)="onFriendsChange($event)"></app-add-friends>
 
     <mat-action-row>
-      <button mat-button color="primary" (click)="nextStep()">Next</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
     </mat-action-row>
   </mat-expansion-panel>
 
@@ -22,8 +22,8 @@
     <app-add-bills [friends]="friends" (onBillsChange)="onBillsChange($event)"></app-add-bills>
 
     <mat-action-row>
-      <button mat-button color="warn" (click)="prevStep()">Previous</button>
-      <button mat-button color="primary" (click)="nextStep()">Next</button>
+      <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
     </mat-action-row>
   </mat-expansion-panel>
 
@@ -36,21 +36,36 @@
     <app-bill-spliting [friends]="friends" [bills]="bills" (onBillsSplit)="onBillsSplit($event)"></app-bill-spliting>
 
     <mat-action-row>
-      <button mat-button color="warn" (click)="prevStep()">Previous</button>
-      <button mat-button color="primary" (click)="nextStep()">Next</button>
+      <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
     </mat-action-row>
   </mat-expansion-panel>
+
   <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
     <mat-expansion-panel-header>
       <mat-panel-title>Calculation</mat-panel-title>
-      <mat-panel-description>Calculate the split and share</mat-panel-description>
+      <mat-panel-description>Calculate the split</mat-panel-description>
     </mat-expansion-panel-header>
 
-    <app-split-calculate [friends]="friends" [bills]="bills" [splits]="splits"></app-split-calculate>
+    <app-split-calculate [friends]="friends" [bills]="bills" [splits]="splits" (onCalculate)="onCalculate($event)"></app-split-calculate>
 
     <mat-action-row>
-      <button mat-button color="warn" (click)="prevStep()">Previous</button>
-      <button mat-button color="primary" (click)="nextStep()">End</button>
+      <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Share</mat-panel-title>
+      <mat-panel-description>Share the calculation with your friends</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-split-share [friends]="friends" [bills]="bills" [network]="network"></app-split-share>
+
+    <mat-action-row>
+      <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-raised-button color="primary" (click)="nextStep()">End</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>

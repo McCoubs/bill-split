@@ -6,13 +6,13 @@ export class BillNetwork {
   friends: { [uuid: string]: Friend };
   bills: { [uuid: string]: Bill };
 
-  adjMap: Map<string, { [target: string]: any }> = new Map();
+  adjMap: {[source: string]: { [target: string]: any } } = {};
 
   constructor(friends: Friend[], bills: Bill[]) {
     this.friends = this.mapToObject(friends);
     this.bills = this.mapToObject(bills);
 
-    friends.forEach((source: Friend) => {
+    this.adjMap = friends.reduce((network: {}, source: Friend) => {
       const map = friends.reduce((obj: {}, target: Friend) => {
         if (source.uuid !== target.uuid) {
           return Object.assign(obj, { [target.uuid]: currency(0) });
@@ -20,11 +20,11 @@ export class BillNetwork {
           return obj;
         }
       }, {});
-      this.adjMap.set(source.uuid, map);
-    });
+      return Object.assign(network, { [source.uuid]: map });
+    }, {});
   }
 
-  calculateNetwork(splits: { [billId: string]: { [friendId: string]: boolean } }[], optimize: boolean = true): Map<string, { [target: string]: any }> {
+  calculateNetwork(splits: { [billId: string]: { [friendId: string]: boolean } }[], optimize: boolean = true): {[source: string]: { [target: string]: any } } {
     Object.entries(splits).forEach(([billId, split]) => {
       const bill: Bill = this.bills[billId];
       // determine contributors for every bill
@@ -33,16 +33,38 @@ export class BillNetwork {
       const amountOweing = bill.distribute(contributors.length + 1);
       // add amount owed to each persons link to owner
       contributors.forEach((friendId: string, index: number) => {
-        const debt = this.adjMap.get(friendId);
-        debt[bill.owner] = debt[bill.owner].add(currency(amountOweing[index]));
-        this.adjMap.set(friendId, debt);
+        this.adjMap[friendId][bill.owner] = this.adjMap[friendId][bill.owner].add(currency(amountOweing[index]));
       });
     });
+
+    if (optimize) {
+      const friends: string[] = Object.keys(this.friends);
+      // for every combo of friend (at most once)
+      for (let i = 0; i < friends.length; i++) {
+        for (let j = 0; j < i; j++) {
+          // get oweing relations
+          const source = friends[i];
+          const target = friends[j];
+          const forward = this.adjMap[source][target];
+          const backward = this.adjMap[target][source];
+          // if they owe one another, simplify the relationship to only 1 person oweing
+          if (forward.intValue >= backward.intValue) {
+            this.adjMap[source][target] = forward.subtract(backward);
+            this.adjMap[target][source] = currency(0);
+          } else {
+            this.adjMap[target][source] = backward.subtract(forward);
+            this.adjMap[source][target] = currency(0);
+          }
+        }
+      }
+    }
     return this.adjMap;
   }
 
   generatePrettyPrint(friendUuid: string): string {
-    return '';
+    return `${this.friends[friendUuid].name} owes:\r\n` + Object.entries(this.adjMap[friendUuid]).map(([target, amount]) => {
+      return `\t${this.friends[target].name}: ${amount.format(true)}`;
+    }).join('\r\n');
   }
 
   private mapToObject(list: { uuid: string }[]): { [uuid: string]: any } {

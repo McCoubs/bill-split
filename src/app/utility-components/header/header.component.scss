@@ -21,11 +21,23 @@
     }
   }
 
-  .account-action-button {
-    display: block;
-  }
-
   .title {
     color: #ffffff;
+  }
+
+  .logged-in-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      height: max-content;
+      margin-right: 12px;
+    }
+
+    img {
+      border-radius: 50%;
+      width: 48px;
+    }
   }
 }

@@ -3,7 +3,13 @@
     <h1 class="title">Bill-Split</h1>
     <img src="assets/logo.png"/>
   </div>
-  <!--<button class="account-action-button" (click)="toggleAccountState($event)">
-    {{ true ? 'Login' : 'LogOut' }}
-  </button>-->
+  <div *ngIf="!user; else loggedIn">
+    <button mat-raised-button color="primary" (click)="logIn()">Login</button>
+  </div>
+  <ng-template #loggedIn>
+    <div class="logged-in-container">
+      <button mat-raised-button color="warn" (click)="logOut()">LogOut</button>
+      <img [src]="user.photoUrl"/>
+    </div>
+  </ng-template>
 </header>

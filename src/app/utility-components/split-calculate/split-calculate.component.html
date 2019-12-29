@@ -1,29 +1,41 @@
 <div class="split-calculate-component">
-  <button mat-button color="primary" (click)="calculate()">calc</button>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name (owes) </th>
-      <td mat-cell *matCellDef="let friend"> {{ friend.name }} </td>
-    </ng-container>
+  <h2 *ngIf="splits?.length <= 0; else canCalculate">Please select who contributed to which bill in previous step</h2>
 
-    <!-- Debtor Column -->
-    <ng-container *ngFor="let debtor of friends" [matColumnDef]="debtor.uuid">
-      <th mat-header-cell *matHeaderCellDef>{{ debtor.name }}</th>
-      <td mat-cell *matCellDef="let friend">{{ debtor.uuid === friend.uuid ? 'N/A' : friend[debtor.uuid].format(true) }}</td>
-    </ng-container>
+  <ng-template #canCalculate>
+    <div *ngIf="needRecalculate; else calculatedTable" class="recalc-container">
+      <h3>The bill information has changed, please recalculate</h3>
+      <button mat-raised-button color="primary" (click)="calculate()">calculate</button>
+      <mat-checkbox color="primary" [(ngModel)]="optimize">Optimize calculations?</mat-checkbox>
+    </div>
 
-    <!-- Copy to Clipboard Column -->
-    <ng-container matColumnDef="copy">
-      <th mat-header-cell *matHeaderCellDef>Copy</th>
-      <td mat-cell *matCellDef="let friend">
-        <button mat-button color="primary" [copy-clipboard]="network.generatePrettyPrint(friend.uuid)">Copy to Clipboard</button>
-      </td>
-    </ng-container>
+    <ng-template #calculatedTable>
+      <span>Read the table row-by-row as 'Name in first column' owes 'Column Name' X amount</span>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name (owes) </th>
+          <td mat-cell *matCellDef="let friend"> {{ friend.name }} </td>
+        </ng-container>
 
-    <!-- settings for table -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <!-- Debtor Column -->
+        <ng-container *ngFor="let debtor of friends" [matColumnDef]="debtor.uuid">
+          <th mat-header-cell *matHeaderCellDef>{{ debtor.name }}</th>
+          <td mat-cell *matCellDef="let friend">{{ debtor.uuid === friend.uuid ? 'N/A' : friend[debtor.uuid].format(true) }}</td>
+        </ng-container>
+
+        <!-- Copy to Clipboard Column -->
+        <ng-container matColumnDef="copy">
+          <th mat-header-cell *matHeaderCellDef>Copy</th>
+          <td mat-cell *matCellDef="let friend">
+            <button mat-raised-button color="primary" [copy-clipboard]="network.generatePrettyPrint(friend.uuid)">Copy to Clipboard</button>
+          </td>
+        </ng-container>
+
+        <!-- settings for table -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </ng-template>
+  </ng-template>
 </div>
 

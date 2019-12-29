@@ -18,7 +18,7 @@ export class AddFriendsComponent implements OnInit {
   ngOnInit() {
     // init new form and listen to its changes
     this.friendsForm = this.fb.group({ friends: this.fb.array([this.newFriend()]) });
-    this.friendsForm.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((values: { friends: Friend[] }) => {
+    this.friendsForm.valueChanges.pipe(debounceTime(200), distinctUntilChanged()).subscribe((values: { friends: Friend[] }) => {
       if (this.friendsForm.dirty && this.friendsForm.valid) {
         this.onFriendsChange.emit(values.friends);
       }

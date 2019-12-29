@@ -30,7 +30,7 @@ export class BillSplitingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.splitForm.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((values: { bills: {}[] }) => {
+    this.splitForm.valueChanges.pipe(debounceTime(200), distinctUntilChanged()).subscribe((values: { bills: {}[] }) => {
       if (this.splitForm.dirty && this.splitForm.valid) {
         this.onBillsSplit.emit(values.bills);
       }

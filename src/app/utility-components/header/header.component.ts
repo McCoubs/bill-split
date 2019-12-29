@@ -7,18 +7,19 @@ import { AuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-lo
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  private user: SocialUser;
+  user: SocialUser = null;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.authService.authState.subscribe((user: SocialUser) => {
-      this.user = user;
-    });
+    this.authService.authState.subscribe((user: SocialUser) => this.user = user);
   }
 
-  toggleAccountState(event: Event) {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
-      .catch(console.error);
+  logIn() {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  logOut() {
+    this.authService.signOut();
   }
 }

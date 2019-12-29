@@ -1,11 +1,16 @@
 <form class="bill-spliting-component" [formGroup]="splitForm">
-  <mat-tab-group formGroupName="bills">
-    <mat-tab class="checkbox-container" *ngFor="let bill of _bills; let i = index" [label]="bill.prettyPrint()" [formGroupName]="bill.uuid">
-      <ng-container *ngFor="let friend of _friends; let j = index">
-        <mat-checkbox color="primary" [formControlName]="friend.uuid" *ngIf="bill.owner !== friend.uuid">
-          {{ friend.name }}
-        </mat-checkbox>
-      </ng-container>
-    </mat-tab>
-  </mat-tab-group>
+  <div *ngIf="_friends.length <= 0 || _bills.length <= 0; else splitBills">
+    <h2>You need to first add bills before trying to split any</h2>
+  </div>
+  <ng-template #splitBills>
+    <mat-tab-group formGroupName="bills">
+      <mat-tab class="checkbox-container" *ngFor="let bill of _bills; let i = index" [label]="bill.prettyPrint()" [formGroupName]="bill.uuid">
+        <ng-container *ngFor="let friend of _friends; let j = index">
+          <mat-checkbox color="primary" [formControlName]="friend.uuid" *ngIf="bill.owner !== friend.uuid">
+            {{ friend.name }}
+          </mat-checkbox>
+        </ng-container>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-template>
 </form>
