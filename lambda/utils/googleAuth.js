@@ -1,5 +1,4 @@
 const { OAuth2Client } = require('google-auth-library');
-const Friend = require('../models/friend');
 require('dotenv').config();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
