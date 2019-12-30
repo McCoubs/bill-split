@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 // modules
 import { AppRoutingModule } from './app-routing.module';
@@ -57,6 +58,7 @@ export function provideConfig() {
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     SocialLoginModule,
     BrowserAnimationsModule,

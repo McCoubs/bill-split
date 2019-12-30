@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Friend } from '../../models/friend';
 import { Bill, BillObject } from '../../models/bill';
-import {BillNetwork} from '../../models/bill-network';
+import { BillNetwork } from '../../models/bill-network';
 
 @Component({
   selector: 'app-bill-split',
