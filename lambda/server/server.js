@@ -77,6 +77,7 @@ router.post('/send-reminder', validateGoogleAuth, (req, res) => {
   };
   // send email, listen to response
   transporter.sendMail(mailOptions, (err, info) => {
+    console.log(process.env.GMAIL_USERNAME, process.env.GMAIL_PASSWORD, JSON.stringify(err), JSON.stringify(info));
     if (!!err) {
       res.status(500).send('An error occurred while trying to send an email to: ' + target);
     } else {
