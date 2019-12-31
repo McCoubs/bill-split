@@ -54,7 +54,7 @@ router.post('/google-auth-login', (req, res) => {
 
 router.post('/google-auth-logout', (req, res) => {
   res.clearCookie('googleId');
-  res.status(200).send('Successfully logged out');
+  res.status(200).json({ message: 'Successfully logged out' });
 });
 
 // email logic
