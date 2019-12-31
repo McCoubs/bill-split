@@ -28,5 +28,7 @@ export class GoogleAuthService {
 
   logIn() { this.auth.signIn(GoogleLoginProvider.PROVIDER_ID); }
 
-  logOut() { this.auth.signOut(); }
+  logOut() {
+    this.http.post(environment.apiEndpoint + 'google-auth-logout', {}).subscribe(() => this.auth.signOut());
+  }
 }

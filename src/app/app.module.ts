@@ -17,6 +17,7 @@ import {
   MatSelectModule, MatTableModule,
   MatTabsModule
 } from '@angular/material';
+import { NotifierModule } from 'angular-notifier';
 
 // components
 import { AppComponent } from './bootstrap/app.component';
@@ -72,7 +73,8 @@ export function provideConfig() {
     MatTabsModule,
     MatCheckboxModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
+    NotifierModule
   ],
   providers: [
     CurrencyPipe,

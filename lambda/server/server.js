@@ -3,14 +3,34 @@
 const express = require('express');
 const serverless = require('serverless-http');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+// express setup
 const app = express();
-const bodyParser = require('body-parser');
-
 let router = express.Router();
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: '*' }));
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+// auth helper
+function validateGoogleAuth(req, res, next) {
+  const idToken = res.cookie['googleId'];
+  // check token exists
+  if (!idToken) {
+    res.status(401).send('No google idToken was found');
+  } else {
+    // if token is valid, move through, else return
+    client.verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID})
+      .then((ticket) => next())
+      .catch(() => res.status(401).send('Provided idToken was invalid'));
+  }
+}
 
 // auth routes
 router.post('/google-auth-login', (req, res) => {
@@ -33,12 +53,39 @@ router.post('/google-auth-login', (req, res) => {
 });
 
 router.post('/google-auth-logout', (req, res) => {
+  res.clearCookie('googleId');
+  res.status(200).send('Successfully logged out');
+});
 
+// email logic
+router.post('/send-reminder', validateGoogleAuth, (req, res) => {
+  // retrieve info from body of req
+  const { type, target, text } = req.body;
+  // create a transporter to send info
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USERNAME,
+      pass: process.env.GMAIL_PASSWORD
+    }
+  });
+  const mailOptions = {
+    from: 'Bill-Split <bill-split@do-not-reply.com>',
+    to: target,
+    subject: 'Your split from bill-split.spencermccoubrey.com!',
+    text: text
+  };
+  // send email, listen to response
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (!!err) {
+      res.status(500).send('An error occurred while trying to send an email to: ' + target);
+    } else {
+      res.status(200).send('Successfully sent email to: ' + target);
+    }
+  });
 });
 
 // set app options
-app.use(cors({credentials: true, origin: '*'}));
-app.use(bodyParser.json());
 app.use('/.netlify/functions/server', router);  // path must route to lambda
 
 // export as required by netlify

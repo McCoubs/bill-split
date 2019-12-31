@@ -27,7 +27,7 @@
         <ng-container matColumnDef="copy">
           <th mat-header-cell *matHeaderCellDef>Copy</th>
           <td mat-cell *matCellDef="let friend">
-            <button mat-raised-button color="primary" [copy-clipboard]="network.generatePrettyPrint(friend.uuid)">Copy to Clipboard</button>
+            <button mat-raised-button color="primary" [copy-clipboard]="network.generateCopyText(friend.uuid)">Copy to Clipboard</button>
           </td>
         </ng-container>
 

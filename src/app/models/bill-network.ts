@@ -61,10 +61,18 @@ export class BillNetwork {
     return this.adjMap;
   }
 
-  generatePrettyPrint(friendUuid: string): string {
-    return `${this.friends[friendUuid].name} owes:\r\n` + Object.entries(this.adjMap[friendUuid]).map(([target, amount]) => {
+  generateCopyText(friendId: string): string {
+    return `${this.friends[friendId].name} owes:\r\n` + Object.entries(this.adjMap[friendId]).map(([target, amount]) => {
       return `\t${this.friends[target].name}: ${amount.format(true)}`;
     }).join('\r\n');
+  }
+
+  generateEmailBody(friendId: string): string {
+    return `Hi ${this.friends[friendId].name},\r\n \r\nThis is an automatic email from bill-split.spencermccoubrey.com.\r\n` +
+      `A friend has calculated your split of some bills, this is a reminder of how much you owe:\r\n` +
+        Object.entries(this.adjMap[friendId]).map(([target, amount]) => {
+          return `\tYou owe ${this.friends[target].name}: ${amount.format(true)}`;
+        }).join('\r\n');
   }
 
   private mapToObject(list: { uuid: string }[]): { [uuid: string]: any } {
