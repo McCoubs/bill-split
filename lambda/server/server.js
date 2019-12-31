@@ -81,7 +81,7 @@ router.post('/send-reminder', validateGoogleAuth, (req, res) => {
     if (!!err) {
       res.status(500).send('An error occurred while trying to send an email to: ' + target);
     } else {
-      res.status(200).send('Successfully sent email to: ' + target);
+      res.status(200).json({ message: 'Successfully sent email to: ' + target });
     }
   });
 });

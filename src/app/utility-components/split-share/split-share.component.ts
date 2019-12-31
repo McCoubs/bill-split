@@ -31,7 +31,7 @@ export class SplitShareComponent implements OnInit {
 
   sendEmail(friend: Friend): void {
     this.reminder.sendEmail(friend.email, this.network.generateEmailBody(friend.uuid)).subscribe(
-      () => this.notifier.notify('success', 'Successfully sent an email to ' + friend.email),
+      (resp: {}) => this.notifier.notify('success', 'Successfully sent an email to ' + friend.email),
       (error: HttpErrorResponse) => this.notifier.notify('error', error.error)
     );
   }
