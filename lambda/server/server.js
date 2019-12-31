@@ -20,7 +20,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // auth helper
 function validateGoogleAuth(req, res, next) {
-  const idToken = res.cookie['googleId'];
+  const idToken = req.cookies['googleId'];
   // check token exists
   if (!idToken) {
     res.status(401).send('No google idToken was found');
