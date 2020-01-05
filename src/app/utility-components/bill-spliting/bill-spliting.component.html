@@ -1,6 +1,6 @@
 <form class="bill-spliting-component" [formGroup]="splitForm">
   <div *ngIf="_friends.length <= 0 || _bills.length <= 0; else splitBills">
-    <h2>You need to first add bills before trying to split any</h2>
+    <h2>Please add some bills in previous step before continuing</h2>
   </div>
   <ng-template #splitBills>
     <mat-tab-group formGroupName="bills">

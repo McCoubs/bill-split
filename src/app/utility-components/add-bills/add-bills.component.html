@@ -1,6 +1,6 @@
 <form class="add-bills-component" [formGroup]="billsForm">
   <div *ngIf="friends.length <= 0; else addBills">
-    <h2>Add some friends before adding your bills</h2>
+    <h2>Please add your friends in previous step before continuing</h2>
   </div>
   <ng-template #addBills>
     <div class="bills-container" formArrayName="bills" *ngFor="let bill of billsForm?.get('bills')?.controls; let i = index;">

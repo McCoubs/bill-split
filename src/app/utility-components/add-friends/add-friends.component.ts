@@ -19,9 +19,8 @@ export class AddFriendsComponent implements OnInit {
     // init new form and listen to its changes
     this.friendsForm = this.fb.group({ friends: this.fb.array([this.newFriend()]) });
     this.friendsForm.valueChanges.pipe(debounceTime(200), distinctUntilChanged()).subscribe((values: { friends: Friend[] }) => {
-      if (this.friendsForm.dirty && this.friendsForm.valid) {
-        this.onFriendsChange.emit(values.friends);
-      }
+      // if valid emit friends o/w emit empty
+      this.onFriendsChange.emit(this.friendsForm.dirty && this.friendsForm.valid ? values.friends : []);
     });
   }
 
@@ -33,8 +32,8 @@ export class AddFriendsComponent implements OnInit {
     // create new form group for a friend
     return this.fb.group({
       name: ['', Validators.required],
-      email: '',
-      phone_number: '',
+      email: ['', Validators.email],
+      phone_number: ['', Validators.pattern('^\\(?([0-9]{3})\\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$')],
       uuid: uuid()
     });
   }

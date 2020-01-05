@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { SocialUser } from 'angularx-social-login';
+import { Component } from '@angular/core';
 import { GoogleAuthService } from '../../services/google-auth.service';
 
 @Component({
@@ -7,14 +6,9 @@ import { GoogleAuthService } from '../../services/google-auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-  user: SocialUser = null;
+export class HeaderComponent {
 
-  constructor(private auth: GoogleAuthService) {}
-
-  ngOnInit() {
-    this.auth.user.subscribe((user: SocialUser) => this.user = user);
-  }
+  constructor(public auth: GoogleAuthService) {}
 
   logIn() { this.auth.logIn(); }
 

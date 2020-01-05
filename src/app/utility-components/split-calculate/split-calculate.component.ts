@@ -26,6 +26,7 @@ export class SplitCalculateComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.needRecalculate = true;
+    this.onCalculate.emit(null);
   }
 
   calculate(): void {

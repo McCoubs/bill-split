@@ -25,7 +25,8 @@ export class SplitShareComponent implements OnInit {
   ngOnInit() {
     // if signed in, add email + text options to table
     this.auth.user.subscribe((user: SocialUser) => {
-      this.displayedColumns = !!user ? ['name', 'copy', 'email', 'text'] : ['name', 'copy'];
+      // TODO: add 'text' option to support sms
+      this.displayedColumns = !!user ? ['name', 'copy', 'email'] : ['name', 'copy'];
     });
   }
 
@@ -36,7 +37,5 @@ export class SplitShareComponent implements OnInit {
     );
   }
 
-  sendText(friend: Friend): void {
-
-  }
+  sendText(friend: Friend): void {}
 }

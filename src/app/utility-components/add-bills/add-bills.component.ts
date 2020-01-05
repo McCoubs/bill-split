@@ -23,9 +23,8 @@ export class AddBillsComponent implements OnInit {
     // init new form and listen to its changes
     this.billsForm = this.fb.group({ bills: this.fb.array([this.newBill()]) });
     this.billsForm.valueChanges.pipe(debounceTime(200), distinctUntilChanged()).subscribe((values: { bills: BillObject[] }) => {
-      if (this.billsForm.dirty && this.billsForm.valid) {
-        this.onBillsChange.emit(values.bills);
-      }
+      // if valid emit bills o/w emit empty
+      this.onBillsChange.emit(this.billsForm.dirty && this.billsForm.valid ? values.bills : []);
     });
   }
 
@@ -37,8 +36,8 @@ export class AddBillsComponent implements OnInit {
     // create new form group for a friend
     return this.fb.group({
       owner: ['', Validators.required],
-      total: ['0.00', Validators.required],
-      name: '',
+      total: ['0.00', [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')]],
+      name: ['', Validators.required],
       uuid: uuid()
     });
   }
@@ -53,8 +52,6 @@ export class AddBillsComponent implements OnInit {
     const control: AbstractControl = (this.billsForm.get('bills') as FormArray).at(index);
     try {
       control.patchValue({ total: this.currencyPipe.transform(value, 'CAD', '') });
-    } catch (e) {
-      control.patchValue({ total: this.currencyPipe.transform(0, 'CAD', '') });
-    }
+    } catch (e) {}
   }
 }

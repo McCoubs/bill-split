@@ -15,3 +15,8 @@ html {
 }
 
 html, body { height: 100%; }
+
+.notifier__notification--material {
+  display: flex;
+  max-width: 80%;
+}
