@@ -3,18 +3,19 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 // modules
-import { AppRoutingModule } from './app-routing.module';
 import { AuthServiceConfig, GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatCheckboxModule,
+  MatButtonModule,
+  MatCheckboxModule,
   MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatSelectModule, MatTableModule,
+  MatSelectModule,
+  MatTableModule,
   MatTabsModule
 } from '@angular/material';
 import { NotifierModule } from 'angular-notifier';
@@ -60,7 +61,6 @@ export function provideConfig() {
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
     SocialLoginModule,
     BrowserAnimationsModule,
     MatExpansionModule,
@@ -85,4 +85,4 @@ export function provideConfig() {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

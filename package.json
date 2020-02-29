@@ -9,8 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start:lambda": "netlify-lambda serve /lambda/server",
-    "build:lambda": "netlify-lambda build /lambda/server",
-    "start:lambdav2": "copy lambda\\server\\server.js lambda\\public\\server.js && netlify-lambda serve /lambda/public"
+    "build:lambda": "netlify-lambda build /lambda/server"
   },
   "private": true,
   "dependencies": {
