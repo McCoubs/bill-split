@@ -6,7 +6,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const { OAuth2Client } = require('google-auth-library');
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 require('dotenv').config();
 
 // express setup
@@ -16,6 +16,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: '*' }));
 
+// config using env keys
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // auth helper
@@ -61,14 +63,6 @@ router.post('/google-auth-logout', (req, res) => {
 router.post('/send-reminder', validateGoogleAuth, (req, res) => {
   // retrieve info from body of req
   const { type, target, text } = req.body;
-  // create a transporter to send info
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USERNAME,
-      pass: process.env.GMAIL_PASSWORD
-    }
-  });
   const mailOptions = {
     from: 'Bill-Split <bill-split@do-not-reply.com>',
     to: target,
@@ -76,13 +70,9 @@ router.post('/send-reminder', validateGoogleAuth, (req, res) => {
     text: text
   };
   // send email, listen to response
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (!!err) {
-      res.status(500).send('An error occurred while trying to send an email to: ' + target);
-    } else {
-      res.status(200).json({ message: 'Successfully sent email to: ' + target });
-    }
-  });
+  sgMail.send(mailOptions)
+    .then(() => res.status(200).json({ message: 'Successfully sent email to: ' + target }))
+    .catch(() => res.status(500).send('An error occurred while trying to send an email to: ' + target));
 });
 
 // set app options
