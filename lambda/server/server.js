@@ -62,7 +62,7 @@ router.post('/google-auth-logout', (req, res) => {
 });
 
 // email logic
-router.post('/send-reminder', (req, res) => {
+router.post('/send-reminder', validateGoogleAuth, (req, res) => {
   // retrieve info from body of req
   const { type, target, text } = req.body;
 
