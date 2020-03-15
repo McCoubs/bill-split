@@ -23,19 +23,23 @@ export class SplitShareComponent implements OnInit {
   constructor(private auth: GoogleAuthService, private reminder: ReminderService, private notifier: NotifierService) {}
 
   ngOnInit() {
-    // if signed in, add email + text options to table
+    // if signed in, add email + sms options to table
     this.auth.user.subscribe((user: SocialUser) => {
-      // TODO: add 'text' option to support sms
-      this.displayedColumns = !!user ? ['name', 'copy', 'email'] : ['name', 'copy'];
+      this.displayedColumns = !!user ? ['name', 'copy', 'email', 'sms'] : ['name', 'copy'];
     });
   }
 
   sendEmail(friend: Friend): void {
     this.reminder.sendEmail(friend.email, this.network.generateEmailBody(friend.uuid)).subscribe(
-      (resp: {}) => this.notifier.notify('success', 'Successfully sent an email to ' + friend.email),
+      (resp: { message: string }) => this.notifier.notify('success', resp.message),
       (error: HttpErrorResponse) => this.notifier.notify('error', error.error)
     );
   }
 
-  sendText(friend: Friend): void {}
+  sendSms(friend: Friend): void {
+    this.reminder.sendSms(friend.phone_number, this.network.generateSmsBody(friend.uuid)).subscribe(
+      (resp: { message: string }) => this.notifier.notify('success', resp.message),
+      (error: HttpErrorResponse) => this.notifier.notify('error', error.error)
+    );
+  }
 }

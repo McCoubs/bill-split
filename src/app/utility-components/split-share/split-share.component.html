@@ -25,11 +25,11 @@
         </td>
       </ng-container>
 
-      <!-- Send Text Column -->
-      <ng-container matColumnDef="text">
-        <th mat-header-cell *matHeaderCellDef>Send Text</th>
+      <!-- Send Sms Column -->
+      <ng-container matColumnDef="sms">
+        <th mat-header-cell *matHeaderCellDef>Send Sms</th>
         <td mat-cell *matCellDef="let friend">
-          <button mat-raised-button color="accent" [disabled]="!friend.phone_number" (click)="sendText(friend)">Send Text</button>
+          <button mat-raised-button color="accent" [disabled]="!friend.phone_number" (click)="sendSms(friend)">Send SMS</button>
         </td>
       </ng-container>
 

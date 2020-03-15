@@ -75,6 +75,14 @@ export class BillNetwork {
         }).join('\r\n');
   }
 
+  generateSmsBody(friendId: string): string {
+    return `Hi ${this.friends[friendId].name},\r\n\r\n` +
+      `Your bill-split from bill-split.spencermccoubrey.com:\r\n` +
+      Object.entries(this.adjMap[friendId]).map(([target, amount]) => {
+        return `\tYou owe ${this.friends[target].name}: ${amount.format(true)}`;
+      }).join('\r\n');
+  }
+
   private mapToObject(list: { uuid: string }[]): { [uuid: string]: any } {
     return list.reduce((obj: {}, current: { uuid: string }) => {
       return Object.assign(obj, { [current.uuid]: current });

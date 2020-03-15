@@ -12,6 +12,10 @@ export class ReminderService {
     return this.sendReminder('email', target, body);
   }
 
+  sendSms(target: string, body: string): Observable<{}> {
+    return this.sendReminder('sms', target, body);
+  }
+
   private sendReminder(type: string, target: string, body: string): Observable<{}> {
     return this.http.post(environment.apiEndpoint + 'send-reminder', { target, type, text: body });
   }
